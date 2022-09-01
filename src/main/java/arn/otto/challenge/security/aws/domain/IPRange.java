@@ -1,15 +1,22 @@
 package arn.otto.challenge.security.aws.domain;
 
-import lombok.Builder;
-import lombok.Value;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
+
 import java.util.List;
 
-@Value
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class IPRange {
 
-    String syncToken;
-    String createDate;
-    List<IPRangePrefix> prefixes;
-    List<IPRangePrefix> ipv6_prefixes;
+    @JsonProperty("syncToken")
+    private String syncToken;
+    @JsonProperty("createDate")
+    private String createDate;
+    @JsonProperty("prefixes")
+    private List<IPRangePrefix> prefixes;
+    @JsonProperty("ipv6_prefixes")
+    private List<IPRangePrefix> ipv6Prefixes;
 }

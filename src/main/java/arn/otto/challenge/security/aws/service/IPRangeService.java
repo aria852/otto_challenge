@@ -36,15 +36,15 @@ public class IPRangeService {
             throw new IllegalArgumentException(String.format("Region %s is not allowed", region));
         }
 
-        var ipRange = restTemplate.getForObject(this.webUrl, IPRange.class);
+        var ipRange = restTemplate.getForObject(webUrl, IPRange.class);
 
         List<String> filterIPRange;
         if(region.equalsIgnoreCase("all")) {
             filterIPRange = filterRegion(validRegions, ipRange.getPrefixes());
-            filterIPRange.addAll(filterRegion(validRegions, ipRange.getIpv6_prefixes()));
+            filterIPRange.addAll(filterRegion(validRegions, ipRange.getIpv6Prefixes()));
         } else {
             filterIPRange = filterRegion(List.of(region), ipRange.getPrefixes());
-            filterIPRange.addAll(filterRegion(List.of(region), ipRange.getIpv6_prefixes()));
+            filterIPRange.addAll(filterRegion(List.of(region), ipRange.getIpv6Prefixes()));
         }
 
         return filterIPRange;

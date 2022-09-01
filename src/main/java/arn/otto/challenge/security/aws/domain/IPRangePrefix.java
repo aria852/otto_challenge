@@ -1,21 +1,28 @@
 package arn.otto.challenge.security.aws.domain;
 
-import lombok.Builder;
-import lombok.Value;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 import org.springframework.util.StringUtils;
 
-@Value
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class IPRangePrefix {
-    String ip_prefix;
-    String ipv6_prefix;
-    String region;
-    String service;
-    String network_border_group;
+    @JsonProperty("ip_prefix")
+    private String ipPrefix;
+    @JsonProperty("ipv6_prefix")
+    private String ipv6Prefix;
+    @JsonProperty("region")
+    private String region;
+    @JsonProperty("service")
+    private String service;
+    @JsonProperty("network_border_group")
+    private String networkBorderGroup;
 
     public String getIPPrefix() {
-        if(StringUtils.hasText(ip_prefix))
-            return ip_prefix;
-        return ipv6_prefix;
+        if(StringUtils.hasText(ipPrefix))
+            return ipPrefix;
+        return ipv6Prefix;
     }
 }
