@@ -3,9 +3,9 @@ package arn.otto.challenge.security.aws.controller;
 import arn.otto.challenge.security.aws.service.IPRangeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @RestController
@@ -25,6 +25,11 @@ public class IPRangeController {
             produces = "text/plain"
     )
     public String getIPRanges(@RequestParam String region) {
-        return String.join(System.lineSeparator(), this.ipRangeService.getIPRanges(region));
+        try {
+            return String.join(System.lineSeparator(), this.ipRangeService.getIPRanges(region));
+        } catch (IllegalArgumentException ex) {
+            // TODO Errorhandling
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
+        }
     }
 }

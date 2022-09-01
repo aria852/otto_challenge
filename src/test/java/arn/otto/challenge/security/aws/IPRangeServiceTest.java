@@ -71,7 +71,7 @@ public class IPRangeServiceTest {
     @BeforeAll
     static void beforeAll() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        expectedIPRange = objectMapper.readValue(TestUtil.readTestData("ip-ranges.json"), IPRange.class);
+        expectedIPRange = objectMapper.readValue(TestUtil.readTestData("ip-ranges-small.json"), IPRange.class);
     }
 
     @BeforeEach
@@ -98,7 +98,7 @@ public class IPRangeServiceTest {
     @Test
     void testParseIPRange() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        var iprange = objectMapper.readValue(TestUtil.readTestData("ip-ranges.json"), IPRange.class);
+        var iprange = objectMapper.readValue(TestUtil.readTestData("ip-ranges-small.json"), IPRange.class);
         assertNotNull(iprange);
         assertEquals(4, iprange.getPrefixes().size());
         assertEquals(2, iprange.getIpv6Prefixes().size());
