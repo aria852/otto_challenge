@@ -19,8 +19,12 @@ public class IPRangeController {
         this.ipRangeService = ipRangeService;
     }
 
-    @GetMapping
-    public List<String> getIPRanges(@RequestParam String region) {
-        return this.ipRangeService.getIPRanges(region);
+    @RequestMapping(
+            value = "",
+            method = RequestMethod.GET,
+            produces = "text/plain"
+    )
+    public String getIPRanges(@RequestParam String region) {
+        return String.join(System.lineSeparator(), this.ipRangeService.getIPRanges(region));
     }
 }
