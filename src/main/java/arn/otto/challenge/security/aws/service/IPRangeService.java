@@ -27,6 +27,11 @@ public class IPRangeService {
     }
 
     public List<String> getIPRanges(String region) {
+        if (!region.equalsIgnoreCase("all") &&
+                this.validRegions.stream().noneMatch(r -> r.equalsIgnoreCase(region))) {
+            throw new IllegalArgumentException(String.format("Region %s is not allowed", region));
+        }
+
         return List.of("100.101.102.103", "1.2.3.4");
     }
 }

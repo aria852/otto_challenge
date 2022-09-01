@@ -74,7 +74,7 @@ public class IPRangeServiceTest {
         var webUrl = "https://unittest.challange.otto.arn/ip-ranges.json";
 
         when(restTemplateBuilder.build()).thenReturn(restTemplate);
-        when(restTemplate.getForObject(webUrl, IPRange.class)).thenReturn(expectedIPRange);
+        lenient().when(restTemplate.getForObject(webUrl, IPRange.class)).thenReturn(expectedIPRange);
 
         this.ipRangeService = new IPRangeService(restTemplateBuilder, webUrl, validRegions);
     }
