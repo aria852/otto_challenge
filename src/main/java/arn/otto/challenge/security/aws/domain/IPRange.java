@@ -1,14 +1,11 @@
 package arn.otto.challenge.security.aws.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.Getter;
 
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class IPRange {
 
     @JsonProperty("syncToken")

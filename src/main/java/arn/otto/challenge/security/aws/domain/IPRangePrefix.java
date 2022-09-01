@@ -10,7 +10,7 @@ import org.springframework.util.StringUtils;
 @Builder
 public class IPRangePrefix {
     @JsonProperty("ip_prefix")
-    private String ipPrefix;
+    private String ipv4Prefix;
     @JsonProperty("ipv6_prefix")
     private String ipv6Prefix;
     @JsonProperty("region")
@@ -21,8 +21,8 @@ public class IPRangePrefix {
     private String networkBorderGroup;
 
     public String getIPPrefix() {
-        if(StringUtils.hasText(ipPrefix))
-            return ipPrefix;
+        if(StringUtils.hasText(ipv4Prefix))
+            return ipv4Prefix;
         return ipv6Prefix;
     }
 }
