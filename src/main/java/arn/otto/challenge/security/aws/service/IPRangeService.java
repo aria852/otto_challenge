@@ -1,5 +1,7 @@
 package arn.otto.challenge.security.aws.service;
 
+import arn.otto.challenge.security.aws.domain.IPRange;
+import arn.otto.challenge.security.aws.domain.IPRangePrefix;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,7 +9,9 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -32,6 +36,29 @@ public class IPRangeService {
             throw new IllegalArgumentException(String.format("Region %s is not allowed", region));
         }
 
-        return List.of("100.101.102.103", "1.2.3.4");
+        var ipRange = restTemplate.getForObject(this.webUrl, IPRange.class);
+
+        List<String> filterIPRange;
+        if(region.equalsIgnoreCase("all")) {
+            filterIPRange = filterRegion(validRegions, ipRange.getPrefixes());
+            filterIPRange.addAll(filterRegion(validRegions, ipRange.getIpv6_prefixes()));
+        } else {
+            filterIPRange = filterRegion(List.of(region), ipRange.getPrefixes());
+            filterIPRange.addAll(filterRegion(List.of(region), ipRange.getIpv6_prefixes()));
+        }
+
+        return filterIPRange;
+    }
+
+    private List<String> filterRegion(List<String> regions, List<IPRangePrefix> ipRangePrefix) {
+        if (ipRangePrefix != null && !ipRangePrefix.isEmpty()) {
+            return ipRangePrefix
+                    .stream()
+                    .filter(i -> regions.stream().anyMatch(r -> i.getRegion().toLowerCase().startsWith(r.toLowerCase() + "-")))
+                    .map(IPRangePrefix::getIPPrefix)
+                    .collect(Collectors.toList());
+        }
+
+        return new ArrayList<>();
     }
 }
