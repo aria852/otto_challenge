@@ -9,7 +9,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,6 +37,9 @@ public class IPRangeService {
         }
 
         var ipRange = restTemplate.getForObject(webUrl, IPRange.class);
+        if (ipRange == null) {
+            throw new IllegalStateException("IPRange is null, but should be empty list");
+        }
 
         List<String> filterIPRange;
         List<String> regionFilter;
@@ -60,6 +63,6 @@ public class IPRangeService {
                     .collect(Collectors.toList());
         }
 
-        return new ArrayList<>();
+        return Collections.emptyList() ;
     }
 }

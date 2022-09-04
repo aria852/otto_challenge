@@ -128,7 +128,7 @@ public class IPRangeServiceTest {
     @Test
     void testRegionWithNoValues() {
         var emptyIPRange = new IPRange();
-        lenient().when(restTemplate.getForObject(webUrl, IPRange.class)).thenReturn(emptyIPRange);
+        when(restTemplate.getForObject(webUrl, IPRange.class)).thenReturn(emptyIPRange);
         var actualIPRange = ipRangeService.getIPRanges("CN");
         assertNotNull(actualIPRange);
         assertEquals(List.of(), actualIPRange);
@@ -156,5 +156,13 @@ public class IPRangeServiceTest {
                 () -> ipRangeService.getIPRanges("EU2"));
         assertEquals("Region EU2 is not allowed", exception.getMessage());
         verify(restTemplate, never()).getForObject(any(), any());
+    }
+
+    @Test
+    void testCallReturnNull() {
+        when(restTemplate.getForObject(webUrl, IPRange.class)).thenReturn(null);
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+                () -> ipRangeService.getIPRanges("EU"));
+        assertEquals("IPRange is null, but should be empty list", exception.getMessage());
     }
 }
