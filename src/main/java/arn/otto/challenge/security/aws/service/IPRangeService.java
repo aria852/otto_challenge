@@ -39,13 +39,15 @@ public class IPRangeService {
         var ipRange = restTemplate.getForObject(webUrl, IPRange.class);
 
         List<String> filterIPRange;
+        List<String> regionFilter;
         if(region.equalsIgnoreCase("all")) {
-            filterIPRange = filterRegion(validRegions, ipRange.getPrefixes());
-            filterIPRange.addAll(filterRegion(validRegions, ipRange.getIpv6Prefixes()));
+            regionFilter = validRegions;
         } else {
-            filterIPRange = filterRegion(List.of(region), ipRange.getPrefixes());
-            filterIPRange.addAll(filterRegion(List.of(region), ipRange.getIpv6Prefixes()));
+            regionFilter = List.of(region);
         }
+        filterIPRange = (filterRegion(regionFilter, ipRange.getPrefixes()));
+        filterIPRange.addAll(filterRegion(regionFilter, ipRange.getIpv6Prefixes()));
+
         return filterIPRange;
     }
 
