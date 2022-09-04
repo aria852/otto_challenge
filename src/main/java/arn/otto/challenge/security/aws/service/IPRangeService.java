@@ -46,7 +46,6 @@ public class IPRangeService {
             filterIPRange = filterRegion(List.of(region), ipRange.getPrefixes());
             filterIPRange.addAll(filterRegion(List.of(region), ipRange.getIpv6Prefixes()));
         }
-
         return filterIPRange;
     }
 
@@ -55,7 +54,7 @@ public class IPRangeService {
             return ipRangePrefix
                     .stream()
                     .filter(i -> regions.stream().anyMatch(r -> i.getRegion().toLowerCase().startsWith(r.toLowerCase() + "-")))
-                    .map(IPRangePrefix::getIPPrefix)
+                    .map(IPRangePrefix::getIpPrefix)
                     .collect(Collectors.toList());
         }
 

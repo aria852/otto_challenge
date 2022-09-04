@@ -30,37 +30,37 @@ public class IPRangeServiceTest {
     @Mock private RestTemplateBuilder restTemplateBuilder;
 
     private final IPRangePrefix iprp_af_s_1 =  IPRangePrefix.builder()
-            .ipv4Prefix("3.2.34.0/26")
+            .ipPrefix("3.2.34.0/26")
             .region("af-south-1")
             .service("AMAZON")
             .networkBorderGroup("af-south-1")
             .build();
     private final IPRangePrefix iprp_ap_ne_2 =  IPRangePrefix.builder()
-            .ipv4Prefix("3.5.140.0/22")
+            .ipPrefix("3.5.140.0/22")
             .region("ap-northeast-2")
             .service("AMAZON")
             .networkBorderGroup("ap-northeast-2")
             .build();
     private final IPRangePrefix iprp_ap_se_4 =  IPRangePrefix.builder()
-            .ipv4Prefix("13.34.37.64/27")
+            .ipPrefix("13.34.37.64/27")
             .region("ap-southeast-4")
             .service("AMAZON")
             .networkBorderGroup("ap-southeast-4")
             .build();
     private final IPRangePrefix iprp_eu_c_1 =  IPRangePrefix.builder()
-            .ipv4Prefix("150.222.129.255/32")
+            .ipPrefix("150.222.129.255/32")
             .region("eu-central-1")
             .service("AMAZON")
             .networkBorderGroup("eu-central-1")
             .build();
     private final IPRangePrefix iprp6_us_w_2 =  IPRangePrefix.builder()
-            .ipv6Prefix("2600:1f70:4000::/40")
+            .ipPrefix("2600:1f70:4000::/40")
             .region("us-west-2")
             .service("AMAZON")
             .networkBorderGroup("us-west-2")
             .build();
     private final IPRangePrefix iprp6_eu_w_1 =  IPRangePrefix.builder()
-            .ipv6Prefix("2a05:d03a:8000::/56")
+            .ipPrefix("2a05:d03a:8000::/56")
             .region("eu-west-1")
             .service("AMAZON")
             .networkBorderGroup("eu-west-2")
@@ -88,7 +88,7 @@ public class IPRangeServiceTest {
     void happyTestRegionEUWithTwoIPValues() {
         var actualIPRange = ipRangeService.getIPRanges("EU");
         assertNotNull(actualIPRange);
-        var expectedIPRange = List.of(iprp_eu_c_1.getIPPrefix(), iprp6_eu_w_1.getIPPrefix());
+        var expectedIPRange = List.of(iprp_eu_c_1.getIpPrefix(), iprp6_eu_w_1.getIpPrefix());
         assertEquals(expectedIPRange, actualIPRange);
 
         verify(restTemplateBuilder, times(1)).build();
@@ -106,14 +106,12 @@ public class IPRangeServiceTest {
         assertEquals("1662013390", iprange.getSyncToken());
         assertEquals("2022-09-01-06-23-10", iprange.getCreateDate());
 
-        assertEquals(iprp_af_s_1.getIPPrefix(), iprange.getPrefixes().get(0).getIPPrefix());
-        assertEquals(iprp_af_s_1.getIPPrefix(), iprange.getPrefixes().get(0).getIpv4Prefix());
+        assertEquals(iprp_af_s_1.getIpPrefix(), iprange.getPrefixes().get(0).getIpPrefix());
         assertEquals(iprp_af_s_1.getService(), iprange.getPrefixes().get(0).getService());
         assertEquals(iprp_af_s_1.getRegion(), iprange.getPrefixes().get(0).getRegion());
         assertEquals(iprp_af_s_1.getNetworkBorderGroup(), iprange.getPrefixes().get(0).getNetworkBorderGroup());
 
-        assertEquals(iprp6_us_w_2.getIPPrefix(), iprange.getIpv6Prefixes().get(0).getIPPrefix());
-        assertEquals(iprp6_us_w_2.getIPPrefix(), iprange.getIpv6Prefixes().get(0).getIpv6Prefix());
+        assertEquals(iprp6_us_w_2.getIpPrefix(), iprange.getIpv6Prefixes().get(0).getIpPrefix());
         assertEquals(iprp6_us_w_2.getService(), iprange.getIpv6Prefixes().get(0).getService());
         assertEquals(iprp6_us_w_2.getRegion(), iprange.getIpv6Prefixes().get(0).getRegion());
         assertEquals(iprp6_us_w_2.getNetworkBorderGroup(), iprange.getIpv6Prefixes().get(0).getNetworkBorderGroup());
@@ -123,7 +121,7 @@ public class IPRangeServiceTest {
     void testRegionAPWithTwoIPValues() {
         var actualIPRange = ipRangeService.getIPRanges("AP");
         assertNotNull(actualIPRange);
-        var expectedIPRange = List.of(iprp_ap_ne_2.getIPPrefix(), iprp_ap_se_4.getIPPrefix());
+        var expectedIPRange = List.of(iprp_ap_ne_2.getIpPrefix(), iprp_ap_se_4.getIpPrefix());
         assertEquals(expectedIPRange, actualIPRange);
     }
 
@@ -142,12 +140,12 @@ public class IPRangeServiceTest {
         assertNotNull(actualIPRange);
 
         var expectedIPRange = List.of(
-                iprp_af_s_1.getIPPrefix(),
-                iprp_ap_ne_2.getIPPrefix(),
-                iprp_ap_se_4.getIPPrefix(),
-                iprp_eu_c_1.getIPPrefix(),
-                iprp6_us_w_2.getIPPrefix(),
-                iprp6_eu_w_1.getIPPrefix());
+                iprp_af_s_1.getIpPrefix(),
+                iprp_ap_ne_2.getIpPrefix(),
+                iprp_ap_se_4.getIpPrefix(),
+                iprp_eu_c_1.getIpPrefix(),
+                iprp6_us_w_2.getIpPrefix(),
+                iprp6_eu_w_1.getIpPrefix());
 
         assertEquals(expectedIPRange, actualIPRange);
     }
