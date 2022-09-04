@@ -9,7 +9,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,15 +37,19 @@ public class IPRangeService {
         }
 
         var ipRange = restTemplate.getForObject(webUrl, IPRange.class);
+        if (ipRange == null) {
+            throw new IllegalStateException("IPRange is null, but should be empty list");
+        }
 
         List<String> filterIPRange;
+        List<String> regionFilter;
         if(region.equalsIgnoreCase("all")) {
-            filterIPRange = filterRegion(validRegions, ipRange.getPrefixes());
-            filterIPRange.addAll(filterRegion(validRegions, ipRange.getIpv6Prefixes()));
+            regionFilter = validRegions;
         } else {
-            filterIPRange = filterRegion(List.of(region), ipRange.getPrefixes());
-            filterIPRange.addAll(filterRegion(List.of(region), ipRange.getIpv6Prefixes()));
+            regionFilter = List.of(region);
         }
+        filterIPRange = (filterRegion(regionFilter, ipRange.getPrefixes()));
+        filterIPRange.addAll(filterRegion(regionFilter, ipRange.getIpv6Prefixes()));
 
         return filterIPRange;
     }
@@ -55,10 +59,10 @@ public class IPRangeService {
             return ipRangePrefix
                     .stream()
                     .filter(i -> regions.stream().anyMatch(r -> i.getRegion().toLowerCase().startsWith(r.toLowerCase() + "-")))
-                    .map(IPRangePrefix::getIPPrefix)
+                    .map(IPRangePrefix::getIpPrefix)
                     .collect(Collectors.toList());
         }
 
-        return new ArrayList<>();
+        return Collections.emptyList() ;
     }
 }

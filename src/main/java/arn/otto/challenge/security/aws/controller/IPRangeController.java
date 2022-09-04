@@ -30,6 +30,8 @@ public class IPRangeController {
         } catch (IllegalArgumentException ex) {
             // TODO Errorhandling
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
+        } catch (IllegalStateException ex) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         }
     }
 }
